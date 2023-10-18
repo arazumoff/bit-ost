@@ -2,6 +2,7 @@
   "name": "bit-ost",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://arazumoff.github.io/bit-ost",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "@testing-library/jest-dom": "^5.14.1",
