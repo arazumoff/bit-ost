@@ -1,6 +1,6 @@
 import axios from 'axios'
 import { configureStore } from '@reduxjs/toolkit'
-import { addPost, fetchPosts } from './thunks'
+import { addPost, deletePost, fetchPosts } from './thunks'
 import postsReducer from './slice'
 
 const getStore = () => {
@@ -27,7 +27,13 @@ describe('test thunks', () => {
     expect(state.posts.posts.length).toEqual(1)
   })
 
-  it('delete post', () => {
-    
+  it('delete post', async () => {
+    const store = getStore()
+    await store.dispatch(addPost({id:2, title: 'text', body: 'text'}))
+    let state = store.getState()
+    expect(state.posts.posts.length).toEqual(1)
+    await store.dispatch(deletePost(2))
+    state = store.getState()
+    expect(state.posts.posts.length).toEqual(0)
   })
 })

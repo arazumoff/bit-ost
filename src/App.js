@@ -1,46 +1,49 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux'
-import { AgGridReact } from 'ag-grid-react';
-import { Button, Container,Row, Col } from 'react-bootstrap'
-import { fetchPosts } from './features/posts/thunks'
-import {selectorAllPosts, selectorPostsStatus} from './features/posts/selectors'
+import { AgGridReact } from 'ag-grid-react'
+import { Container,Row, Col } from 'react-bootstrap'
+import { addPost, fetchPosts } from './features/posts/thunks'
+import { selectorAllPosts } from './features/posts/selectors'
 
 import 'ag-grid-community/styles/ag-grid.css'
 import 'ag-grid-community/styles/ag-theme-alpine.css'
+import ModalPost from './modal'
 
 
 const Table = () => {
-  
-}
-
-const App = () => {
-  const dispatch = useDispatch()
   const posts = useSelector(selectorAllPosts)
-  const status = useSelector(selectorPostsStatus)
   const [columnDefs, setColumnDefs] = useState([
     {field: 'id', filter: true},
     {field: 'title', filter: true},
     {field: 'body'}
-  ]);
+  ])
+  return(
+    <div className="ag-theme-alpine" style={{width: 600, height: 500}}>
+      <AgGridReact
+        rowData={posts}
+        columnDefs={columnDefs}
+      />
+    </div>
+  )
+}
+
+const App = () => {
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    console.log('render')
     dispatch(fetchPosts())
-  }, [dispatch])
+  }, [])
 
   return (
     <Container fluid="md">
-      <Row>
-        <Col><Button>Add row</Button></Col>
+      <Row className="justify-content-md-center">
+        <Col className="p-2">
+          <ModalPost onSave={(data)=>dispatch(addPost(data))}/>
+        </Col>
       </Row>
-      <Row>
+      <Row className="justify-content-md-center">
         <Col>
-          <div className="ag-theme-alpine" style={{width: '100%', height: 500}}>
-            <AgGridReact
-              rowData={posts}
-              columnDefs={columnDefs}
-            />
-          </div>
+          <Table />
         </Col>
       </Row>
     </Container>
